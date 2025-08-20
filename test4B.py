@@ -1,44 +1,47 @@
-def get_input():
-    print("Enter your multiline input (type ';' on a new line to finish):")
-    lines = []
-    while True:
-        line = input()
-        if line.strip() == ';':
-            break
-        lines.append(line)
-    return " ".join(lines)
+args = ()
+kwargs = {}
 
-def analyze_text(text):
-    import re
-    words = re.findall(r"\b\w+\b", text)  # extract words only
-    total_words = len(words)
-    unique_words = len(set(words))
-    
-    long_words = [word for word in words if len(word) > 5]
-    
-    capitalized_words = [word for word in words if len(word) > 1 and word[0].isupper() and word[-1].isupper()]
-    
-    print("\n--- Text Analysis Report ---")
-    print("Total words:", total_words)
-    print("Unique words:", unique_words)
-    print("Words longer than 5 characters:", long_words)
-    print("Capitalized words:", capitalized_words)
-    
-    return words
 
-def search_word(words):
-    word_to_search = input("Enter special word to search: ")
-    ignore_case = input("Ignore case while searching? (yes/no): ").lower() == 'yes'
-    
-    count = 0
-    if ignore_case:
-        count = sum(1 for word in words if word.lower() == word_to_search.lower())
-    else:
-        count = words.count(word_to_search)
-        
-    print(f"Word '{word_to_search}' appears {count} time(s).")
+get_input = lambda *args, **kwargs: " ".join(
+    iter(
+        lambda: (line := input()) if line.strip() != ";" else (_ for _ in ()).throw(StopIteration),
+        None
+    )
+)
 
-def main():
+analyze_text = lambda text, *args, **kwargs: (
+    # inside tuple to allow printing & returning awords
+    (lambda words: (
+        print("\n--- Text Analysis Report ---"),
+        print("Total words:", len(words)),
+        print("Unique words:", len(set(words))),
+        print("Words longer than 5 characters:", list(filter(lambda w: len(w) > 5, words))),
+        print("Capitalized words:", list(filter(lambda w: w.isupper() and len(w) > 1, map(lambda x: x.strip(), words)))),
+        words
+    )[-1])(  
+        "".join(ch if (ch.isalpha() or ch.isdigit()) else " " for ch in text).split()
+    )
+)
+
+search_word = lambda words, *args, **kwargs: (
+    (lambda word_to_search, ignore_case: (
+        print(
+            f"Word '{word_to_search}' appears {sum(map(lambda w: (w.lower() if ignore_case else w) == (word_to_search.lower() if ignore_case else word_to_search), words))} time(s)."
+        )
+    ))(input("Enter special word to search: "), input("Ignore case while searching? (yes/no): ").lower() == 'yes')
+)
+
+main = lambda *args, **kwargs: (
+    (lambda: [
+        (lambda text, words: [
+            search_word(words),
+            None
+        ])(get_input(), analyze_text(get_input()))  # calls twice for demonstration
+        for _ in iter(lambda: input("Search again? (y/n): ").lower() == 'y', False)
+    ])()
+)
+
+if __name__ == "__main__":
     while True:
         text = get_input()
         words = analyze_text(text)
@@ -46,6 +49,3 @@ def main():
         again = input("Search again? (y/n): ").lower()
         if again != 'y':
             break
-
-if __name__ == "__main__":
-    main()
