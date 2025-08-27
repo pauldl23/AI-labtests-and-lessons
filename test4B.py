@@ -34,7 +34,7 @@ def anal(text, *args, **kwargs):
 
     return words
 
-# --- Search function (loop inside) ---
+# --- Search function---
 def find(words, *args, **kwargs):
     while True:
         word = input("\nEnter word to search (or ';' to stop): ")
