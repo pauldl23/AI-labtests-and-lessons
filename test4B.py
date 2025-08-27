@@ -1,51 +1,61 @@
-args = ()
-kwargs = {}
-
-
-get_input = lambda *args, **kwargs: " ".join(
-    iter(
-        lambda: (line := input()) if line.strip() != ";" else (_ for _ in ()).throw(StopIteration),
-        None
-    )
-)
-
-analyze_text = lambda text, *args, **kwargs: (
-    # inside tuple to allow printing & returning awords
-    (lambda words: (
-        print("\n--- Text Analysis Report ---"),
-        print("Total words:", len(words)),
-        print("Unique words:", len(set(words))),
-        print("Words longer than 5 characters:", list(filter(lambda w: len(w) > 5, words))),
-        print("Capitalized words:", list(filter(lambda w: w.isupper() and len(w) > 1, map(lambda x: x.strip(), words)))),
-        words
-    )[-1])(  
-        "".join(ch if (ch.isalpha() or ch.isdigit()) else " " for ch in text).split()
-    )
-)
-
-search_word = lambda words, *args, **kwargs: (
-    (lambda word_to_search, ignore_case: (
-        print(
-            f"Word '{word_to_search}' appears {sum(map(lambda w: (w.lower() if ignore_case else w) == (word_to_search.lower() if ignore_case else word_to_search), words))} time(s)."
-        )
-    ))(input("Enter special word to search: "), input("Ignore case while searching? (yes/no): ").lower() == 'yes')
-)
-
-main = lambda *args, **kwargs: (
-    (lambda: [
-        (lambda text, words: [
-            search_word(words),
-            None
-        ])(get_input(), analyze_text(get_input()))  # calls twice for demonstration
-        for _ in iter(lambda: input("Search again? (y/n): ").lower() == 'y', False)
-    ])()
-)
-
-if __name__ == "__main__":
+def get(*args, **kwargs):
+    lines = []
     while True:
-        text = get_input()
-        words = analyze_text(text)
-        search_word(words)
-        again = input("Search again? (y/n): ").lower()
-        if again != 'y':
+        line = input()
+        if line.strip() == ";":
             break
+        lines.append(line)
+    return " ".join(lines)
+
+# --- Analysis function ---
+def anal(text, *args, **kwargs):
+    words = []
+    current = ""
+    for ch in text:
+        if ch.isalpha() or ch.isdigit():
+            current += ch
+        else:
+            if current:
+                words.append(current)
+                current = ""
+    if current:
+        words.append(current)
+
+    # reports
+    print("\n--- Text Analysis Report ---")
+    print("Total words:", len(words))
+    print("Unique words:", len(set(words)))
+
+    long_words = [w for w in words if len(w) > 5]
+    print("Words longer than 5 characters:", long_words)
+
+    caps = [w for w in words if w.isupper() and len(w) > 1]
+    print("Capitalized words:", caps)
+
+    return words
+
+# --- Search function (loop inside) ---
+def find(words, *args, **kwargs):
+    while True:
+        word = input("\nEnter word to search (or ';' to stop): ")
+        if word.strip() == ";":
+            break
+
+        ignore = input("Ignore case? (yes/no): ").lower() == "yes"
+
+        if ignore:
+            count = sum(1 for w in words if w.lower() == word.lower())
+        else:
+            count = words.count(word)
+
+        if count == 0:
+            print("Word not found")
+        else:
+            print(f"'{word}' found {count} times")
+
+# --- Main program ---
+print("Enter text (end with ';' on a new line):")
+text = get()
+words = anal(text)
+find(words)
+print("Done.")
