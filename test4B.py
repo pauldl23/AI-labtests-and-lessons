@@ -7,8 +7,10 @@ def get(*args, **kwargs):
         lines.append(line)
     return " ".join(lines)
 
+
 # --- Analysis function ---
 def anal(text, *args, **kwargs):
+    # tokenize: extract only alnum words
     words = []
     current = ""
     for ch in text:
@@ -26,15 +28,22 @@ def anal(text, *args, **kwargs):
     print("Total words:", len(words))
     print("Unique words:", len(set(words)))
 
-    long_words = [w for w in words if len(w) > 5]
+    
+    long_words = list(filter(lambda w: len(w) > 5, words))
     print("Words longer than 5 characters:", long_words)
 
-    caps = [w for w in words if w.isupper() and len(w) > 1]
+    
+    caps = list(filter(lambda w: w.isupper() and len(w) > 1, words))
     print("Capitalized words:", caps)
+
+   
+    word_lengths = list(map(lambda w: (w, len(w)), words))
+    print("Word lengths:", word_lengths)
 
     return words
 
-# --- Search function---
+
+# --- Search function ---
 def find(words, *args, **kwargs):
     while True:
         word = input("\nEnter word to search (or ';' to stop): ")
@@ -43,15 +52,14 @@ def find(words, *args, **kwargs):
 
         ignore = input("Ignore case? (yes/no): ").lower() == "yes"
 
+        # map + filter + lambda for counting
         if ignore:
-            count = sum(1 for w in words if w.lower() == word.lower())
+            count = len(list(filter(lambda w: w.lower() == word.lower(), words)))
         else:
-            count = words.count(word)
+            count = len(list(filter(lambda w: w == word, words)))
 
-        if count == 0:
-            print("Word not found")
-        else:
-            print(f"'{word}' found {count} times")
+        print(f"'{word}' found {count} times" if count > 0 else "Word not found")
+
 
 # --- Main program ---
 print("Enter text (end with ';' on a new line):")
