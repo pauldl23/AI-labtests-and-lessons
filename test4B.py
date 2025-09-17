@@ -10,7 +10,6 @@ def get(*args, **kwargs):
 
 # --- Analysis function ---
 def anal(text, *args, **kwargs):
-    # tokenize: extract only alnum words
     words = []
     current = ""
     for ch in text:
@@ -28,17 +27,11 @@ def anal(text, *args, **kwargs):
     print("Total words:", len(words))
     print("Unique words:", len(set(words)))
 
-    
     long_words = list(filter(lambda w: len(w) > 5, words))
     print("Words longer than 5 characters:", long_words)
 
-    
     caps = list(filter(lambda w: w.isupper() and len(w) > 1, words))
     print("Capitalized words:", caps)
-
-   
-    word_lengths = list(map(lambda w: (w, len(w)), words))
-    print("Word lengths:", word_lengths)
 
     return words
 
@@ -52,7 +45,6 @@ def find(words, *args, **kwargs):
 
         ignore = input("Ignore case? (yes/no): ").lower() == "yes"
 
-        # map + filter + lambda for counting
         if ignore:
             count = len(list(filter(lambda w: w.lower() == word.lower(), words)))
         else:
