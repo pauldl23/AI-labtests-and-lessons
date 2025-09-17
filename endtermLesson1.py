@@ -37,4 +37,42 @@ for i, row in enumerate(tup8):
             print(f'    value: {value}')
     else:
         print(f'    value: {row}')
+        
+        
+        
+        
+tup = (4, 5, 6, 7)
+print("Before: ",tup)
+tup = tup[:2] + tup [3:]
+print('After: ", tup)
+# Insert append values
+tup = (10, 20, 30, 40)
+print(Before: ", tup)
+tup = tup(:2] + (25,) + tup[2:]
+print('After:, tup)
+# remove values
+tup = (10, 200, 300, 400)
+
+
+#anothe code
+
+eaployees = (
+('ALice Go',
+"Software Engineer', 8000),
+("Johnny Pol', "Contractor", 590809),
+('Angel", "Wifey"
+50)
+18
+D
+def display_empLoyees(empLoyee_List):
+print("EmpLoyee List')
+for employee in employee_list:
+print (f'Nane: (employee[0]}, Position: (employee(11), Salary: (employee(2]
+囚
+13
+14
+15
+16
+_name. == '_main.':
+input()
     
