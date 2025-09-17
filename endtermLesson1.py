@@ -40,39 +40,43 @@ for i, row in enumerate(tup8):
         
         
         
-        
+ # Remove value from tuple
 tup = (4, 5, 6, 7)
-print("Before: ",tup)
-tup = tup[:2] + tup [3:]
-print('After: ", tup)
-# Insert append values
+print("Before:", tup)
+tup = tup[:2] + tup[3:]   # removes the 3rd element (6)
+print("After:", tup)
+
+# Insert value into tuple
 tup = (10, 20, 30, 40)
-print(Before: ", tup)
-tup = tup(:2] + (25,) + tup[2:]
-print('After:, tup)
-# remove values
+print("Before:", tup)
+tup = tup[:2] + (25,) + tup[2:]  # insert 25 at index 2
+print("After:", tup)
+
+# Remove value from another tuple
 tup = (10, 200, 300, 400)
+print("Original tuple:", tup)
+tup = tup[:1] + tup[2:]   # removes 200
+print("After removing:", tup)
 
 
-#anothe code
 
-eaployees = (
-('ALice Go',
-"Software Engineer', 8000),
-("Johnny Pol', "Contractor", 590809),
-('Angel", "Wifey"
-50)
-18
-D
-def display_empLoyees(empLoyee_List):
-print("EmpLoyee List')
-for employee in employee_list:
-print (f'Nane: (employee[0]}, Position: (employee(11), Salary: (employee(2]
-囚
-13
-14
-15
-16
-_name. == '_main.':
-input()
-    
+
+
+#anothercode
+
+# Employee data stored as tuples
+employees = (
+    ("Alice Go", "Software Engineer", 8000),
+    ("Johnny Pol", "Contractor", 590809),
+    ("Angel", "Wifey", 50)
+)
+
+# Function to display employees
+def display_employees(employee_list):
+    print("Employee List:")
+    for employee in employee_list:
+        print(f"Name: {employee[0]}, Position: {employee[1]}, Salary: {employee[2]}")
+
+# Main program
+if __name__ == "__main__":
+    display_employees(employees)
